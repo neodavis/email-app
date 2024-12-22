@@ -15,5 +15,24 @@
       </div>
     </p-button>
   </ng-template>
+  <ng-template let-node pTemplate="newFolder">
+    <div class="flex w-full gap-2">
+      <input
+        pInputText
+        id="emailAddress"
+        class="w-full h-full"
+        placeholder="Enter new folder name"
+        [(ngModel)]="newFolderName"
+      />
+      <p-button
+        styleClass=" h-full"
+        icon="pi pi-save"
+        [loading]="newFolderLoading"
+        [severity]="'primary'"
+        [disabled]="!newFolderName"
+        (click)="onNewFolder.emit({ emailAddress: node.emailAddress, folder: newFolderName })"
+      ></p-button>
+    </div>
+  </ng-template>
 </p-tree>
 

@@ -1,6 +1,6 @@
 <div class="flex gap-3 h-full border">
-  <div class="border-r surface-border h-full bg-white min-w-[300px] overflow-y-auto overflow-x-hidden">
-    <div class="border-b pb-2 mb-2 px-2 my-2 flex gap-2 w-[300px]">
+  <div class="border-r pb-4 surface-border h-full bg-white min-w-[300px] max-w-[300px] overflow-y-auto overflow-x-hidden">
+    <div class="border-b pb-2 mb-2 px-2 my-2 flex gap-2 max-w-[300px]">
       <p-button
         severity="info"
         class="w-full"
@@ -22,13 +22,15 @@
         *ngIf="!loadingStates.mailboxes"
         class="block px-2"
         [emails]="(emails$ | async)!"
+        [newFolderLoading]="loadingStates.newFolder"
         [selectedFolder]="selectedFolder$ | async"
         (onFolderSelect)="handleFolderSelect($event)"
+        (onNewFolder)="handleNewFolder($event)"
       ></app-email-list>
     </div>
   </div>
 
-  <div [class.hidden]="!(selectedFolder$ | async)" class="border-r surface-border h-full bg-white min-w-[400px] max-w-[400px] overflow-y-auto overflow-x-hidden">
+  <div [class.hidden]="!(selectedFolder$ | async)" class="border-r pb-4 surface-border h-full bg-white min-w-[400px] max-w-[400px] overflow-y-auto overflow-x-hidden">
     <div class="border-b pb-2 mb-2 px-2 my-2 flex gap-2 max-w-[400px]">
       <p-button
         severity="info"

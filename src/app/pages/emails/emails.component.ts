@@ -63,7 +63,8 @@ export class EmailsComponent implements OnInit {
     messageDetails: false,
     sendMessage: false,
     draftMessage: false,
-    moveIntoFolder: false
+    moveIntoFolder: false,
+    newFolder: false,
   };
 
   private ref: DynamicDialogRef | undefined;
@@ -172,8 +173,22 @@ export class EmailsComponent implements OnInit {
         }),
         finalize(() => {
           this.loadingStates.moveIntoFolder = false;
-          this.loadingStates.messageList = true;
+          this.loadingStates.messageList = false;
         })
+      )
+      .subscribe();
+  }
+
+  handleNewFolder(folder: {emailAddress: string; folder: string}) {
+    this.loadingStates.newFolder = true;
+    this.mailboxApiService.createFolder$(folder.emailAddress, folder.folder)
+      .pipe(
+        take(1),
+        tap(() => {
+          this.loadMailboxes();
+          this.notificationService.showSuccess('New Folder have been created successfully!')
+        }),
+        finalize(() => this.loadingStates.newFolder = false)
       )
       .subscribe();
   }
