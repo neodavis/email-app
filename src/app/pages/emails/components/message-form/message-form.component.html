@@ -69,10 +69,23 @@
         type="submit"
         label="Send"
         [disabled]="messageForm.invalid"
-        [loading]="loading"
+        [loading]="sendLoading"
         class="w-full"
         styleClass="w-full"
         icon="pi pi-send"
+      ></p-button>
+    </li>
+    <li>
+      <p-button
+        type="button"
+        label="Save to Drafts"
+        [loading]="draftLoading"
+        [disabled]="messageForm.invalid"
+        class="w-full mt-2"
+        severity="info"
+        styleClass="w-full mt-2"
+        icon="pi pi-file"
+        (click)="onSaveToDraft.emit(messageForm.getRawValue())"
       ></p-button>
     </li>
   </ul>

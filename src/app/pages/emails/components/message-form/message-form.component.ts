@@ -16,9 +16,11 @@ import { Observable, of } from 'rxjs';
 })
 export class MessageFormComponent implements OnChanges {
   @Input() emails: Email[] = [];
-  @Input() loading = false;
+  @Input() sendLoading = false;
+  @Input() draftLoading = false;
 
   @Output() onSubmit = new EventEmitter<MessageCreation>();
+  @Output() onSaveToDraft = new EventEmitter<MessageCreation>();
 
   messageForm: FormGroup;
   folders$: Observable<string[]> = of([]);

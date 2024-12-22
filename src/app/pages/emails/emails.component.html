@@ -71,8 +71,10 @@
         <ng-container *ngIf="!loadingStates.messageDetails">
           <app-message-form
             [emails]="emails"
-            [loading]="loadingStates.sendMessage"
+            [draftLoading]="loadingStates.draftMessage"
+            [sendLoading]="loadingStates.sendMessage"
             (onSubmit)="handleMessageSubmit($event)"
+            (onSaveToDraft)="handleMessageDraftSubmit($event)"
           ></app-message-form>
         </ng-container>
       </div>

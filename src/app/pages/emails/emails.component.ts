@@ -54,7 +54,8 @@ export class EmailsComponent implements OnInit {
     mailboxes: false,
     messageList: false,
     messageDetails: false,
-    sendMessage: false
+    sendMessage: false,
+    draftMessage: false,
   };
 
   private ref: DynamicDialogRef | undefined;
@@ -131,6 +132,21 @@ export class EmailsComponent implements OnInit {
           this.notificationService.showSuccess('Message have been sent successfully!')
         }),
         finalize(() => this.loadingStates.sendMessage = false)
+      )
+      .subscribe();
+  }
+
+  handleMessageDraftSubmit(message: MessageCreation) {
+    this.loadingStates.draftMessage = true;
+    this.mailboxApiService.saveToDraft$(message)
+      .pipe(
+        take(1),
+        tap(() => {
+          this.newMessage$.next(false);
+          this.loadMailboxes();
+          this.notificationService.showSuccess('Message saved into draft!')
+        }),
+        finalize(() => this.loadingStates.draftMessage = false)
       )
       .subscribe();
   }

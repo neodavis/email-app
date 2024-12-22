@@ -45,4 +45,8 @@ export class MailboxApiService {
       destinationFolderName
     });
   }
+
+  saveToDraft$(message: MessageCreation): Observable<any> {
+    return this.http.post(`/api/v1/folder/add-to-draft`, message);
+  }
 }
