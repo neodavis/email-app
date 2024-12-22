@@ -4,12 +4,16 @@
 
 @import "primeicons/primeicons.css";
 
+* {
+  color-scheme: light;
+}
+
 body {
   margin: 0;
   font-family: var(--font-family);
   padding-top: 60px; // Height of navbar
 }
-  
+
 .app-container {
     min-height: calc(100vh - 60px);
 }
