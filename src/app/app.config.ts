@@ -27,6 +27,6 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({ theme: { preset: Aura }}),
     DialogService,
     MessageService,
-    { provide: API_BASE_URL, useValue: 'http://209.38.112.145:9090' },
+    { provide: API_BASE_URL, useValue: '' },
   ]
 };
