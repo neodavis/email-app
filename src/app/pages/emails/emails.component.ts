@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { BehaviorSubject, filter, finalize, Observable, of, shareReplay, switchMap, withLatestFrom } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
+import { BehaviorSubject, filter, finalize, merge, Observable, of, shareReplay, switchMap, withLatestFrom } from 'rxjs';
+import { map, take, tap } from 'rxjs/operators';
 import { ProgressSpinner } from 'primeng/progressspinner';
 
 import { MailboxApiService } from './services/email.service';
-import { Message } from './models/email.model';
+import { Message, MessageDetails } from './models/email.model';
 import { Email, MessageCreation } from './models/mailbox.model';
 import { MailboxFormComponent } from './components/mailbox-form/mailbox-form.component';
 import { MessagePreviewComponent } from './components/message-preview/message-preview.component';
@@ -25,18 +25,25 @@ import { NotificationService } from '../../shared/ui/services/notification.servi
   styleUrl: 'emails.component.scss',
 })
 export class EmailsComponent implements OnInit {
-  emails: Email[] = [];
+  emails$ = new BehaviorSubject<Email[]>([]);
   selectedMessageMsgnum$ = new BehaviorSubject<string | null>(null);
   selectedFolder$ = new BehaviorSubject<{ emailAddress: string, folder: string } | null>(null);
   newMessage$ = new BehaviorSubject<boolean>(false);
-  messages$: Observable<Message[]> = this.selectedFolder$
+  messages$: Observable<Message[]> = merge(
+    this.selectedFolder$,
+    this.emails$,
+  )
     .pipe(
-      switchMap((value) => value
-        ? this.mailboxApiService.getMessages$(value.emailAddress, value.folder)
+      switchMap(() => this.selectedFolder$.value
+        ? this.mailboxApiService.getMessages$(this.selectedFolder$.value.emailAddress, this.selectedFolder$.value.folder)
         : of([])
       ),
       tap(() => this.loadingStates.messageList = false),
     );
+  folders$ = this.selectedFolder$
+    .pipe(
+      map((value) => this.emails$.value.find(email => email.emailAddress === value?.emailAddress)?.folders ?? [])
+    )
   selectedMessage$ = this.selectedMessageMsgnum$
     .pipe(
       withLatestFrom(this.selectedFolder$),
@@ -56,6 +63,7 @@ export class EmailsComponent implements OnInit {
     messageDetails: false,
     sendMessage: false,
     draftMessage: false,
+    moveIntoFolder: false
   };
 
   private ref: DynamicDialogRef | undefined;
@@ -74,6 +82,7 @@ export class EmailsComponent implements OnInit {
   handleFolderSelect(folder: { emailAddress: string, folder: string }) {
     this.selectedFolder$.next(folder);
     this.newMessage$.next(false);
+    this.selectedMessageMsgnum$.next(null);
     this.loadingStates.messageList = true;
   }
 
@@ -114,7 +123,7 @@ export class EmailsComponent implements OnInit {
     this.mailboxApiService.getMailboxes$()
       .pipe(
         take(1),
-        tap((mailboxes) => this.emails = mailboxes),
+        tap((mailboxes) => this.emails$.next(mailboxes)),
         finalize(() => this.loadingStates.mailboxes = false),
       )
       .subscribe();
@@ -125,7 +134,6 @@ export class EmailsComponent implements OnInit {
     this.mailboxApiService.sendMessage$(message)
       .pipe(
         take(1),
-        switchMap((createdMessage) => this.mailboxApiService.moveIntoFolder(message.senderEmail, createdMessage.msgnum, createdMessage.folder, message.folder)),
         tap(() => {
           this.newMessage$.next(false);
           this.loadMailboxes();
@@ -147,6 +155,25 @@ export class EmailsComponent implements OnInit {
           this.notificationService.showSuccess('Message saved into draft!')
         }),
         finalize(() => this.loadingStates.draftMessage = false)
+      )
+      .subscribe();
+  }
+
+  moveIntoFolder(folder: string) {
+    this.loadingStates.moveIntoFolder = true;
+    this.loadingStates.messageList = true;
+    this.mailboxApiService.moveIntoFolder(this.selectedFolder$.value!.emailAddress, this.selectedMessageMsgnum$.value!, this.selectedFolder$.value!.folder, folder)
+      .pipe(
+        take(1),
+        tap(() => {
+          this.selectedMessageMsgnum$.next(null);
+          this.loadMailboxes();
+          this.notificationService.showSuccess('Message have been moved successfully!')
+        }),
+        finalize(() => {
+          this.loadingStates.moveIntoFolder = false;
+          this.loadingStates.messageList = true;
+        })
       )
       .subscribe();
   }

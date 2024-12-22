@@ -21,7 +21,8 @@
       <app-email-list
         *ngIf="!loadingStates.mailboxes"
         class="block px-2"
-        [emails]="emails"
+        [emails]="(emails$ | async)!"
+        [selectedFolder]="selectedFolder$ | async"
         (onFolderSelect)="handleFolderSelect($event)"
       ></app-email-list>
     </div>
@@ -50,6 +51,7 @@
         *ngIf="!loadingStates.messageList"
         class="block px-2 mt-3"
         [messages]="messages"
+        [selectedMessageMsgnum]="(selectedMessageMsgnum$ | async)!"
         (onMessageSelect)="handleMessageSelect($event)"
       ></app-message-list>
     </div>
@@ -63,14 +65,21 @@
     ></p-progressSpinner>
 
     <div *ngIf="selectedMessage$ | async as selectedMessage">
-      <app-message-preview *ngIf="!loadingStates.messageDetails" [message]="selectedMessage"></app-message-preview>
+      <app-message-preview
+        *ngIf="!loadingStates.messageDetails"
+        [message]="selectedMessage"
+        [folders]="(folders$ | async)!"
+        [moveLoading]="loadingStates.moveIntoFolder"
+        [folder]="(selectedFolder$ | async)?.folder ?? null"
+        (moveIntoFolder)="moveIntoFolder($event!)"
+      ></app-message-preview>
     </div>
 
     <div *ngIf="newMessage$ | async">
       <div class="flex-1">
         <ng-container *ngIf="!loadingStates.messageDetails">
           <app-message-form
-            [emails]="emails"
+            [emails]="(emails$ | async)!"
             [draftLoading]="loadingStates.draftMessage"
             [sendLoading]="loadingStates.sendMessage"
             (onSubmit)="handleMessageSubmit($event)"

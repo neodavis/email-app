@@ -16,6 +16,7 @@ import { TreeNode } from 'primeng/api';
 })
 export class EmailListComponent implements OnChanges {
   @Input() emails: Email[] = [];
+  @Input() selectedFolder: { emailAddress: string; folder: string } | null = null;
 
   @Output() onFolderSelect = new EventEmitter<{ emailAddress: string, folder: string }>();
 

@@ -1,6 +1,6 @@
 <p-button
   *ngFor="let message of messages"
-  severity="secondary"
+  [severity]="message?.msgnum === selectedMessageMsgnum ? 'primary' : 'secondary'"
   class="flex flex-col mb-1 w-full"
   styleClass="flex flex-col w-full"
   (click)="onMessageSelect.emit(message)"

@@ -13,6 +13,7 @@ import { Message } from '../../models/email.model';
 })
 export class MessageListComponent {
   @Input() messages: Message[] = [];
+  @Input() selectedMessageMsgnum: null | string = null;
 
   @Output() onMessageSelect = new EventEmitter<Message>();
 }

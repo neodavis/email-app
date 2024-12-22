@@ -6,7 +6,10 @@
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "postinstall": "npm install @rollup/rollup-linux-x64-gnu --no-save || true",
+    "clean": "rimraf node_modules package-lock.json",
+    "clean:install": "npm run clean && npm install"
   },
   "private": true,
   "dependencies": {
@@ -43,5 +46,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.5.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

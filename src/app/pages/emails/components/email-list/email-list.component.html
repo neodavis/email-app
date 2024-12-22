@@ -3,7 +3,11 @@
     <p-button
       class="block mb-1 w-full"
       styleClass="w-full"
-      severity="secondary"
+      [severity]="
+        node.label === selectedFolder?.folder && node.emailAddress === selectedFolder?.emailAddress
+        ? 'primary'
+        : 'secondary'
+      "
       (click)="onFolderSelect.emit({ emailAddress: node.emailAddress, folder: node.label })"
     >
       <div class="flex w-full justify-start">

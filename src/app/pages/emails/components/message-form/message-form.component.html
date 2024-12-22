@@ -28,25 +28,12 @@
 
     <li class="flex justify-between items-end mb-2">
       <span class="p-float-label w-full">
-        <label for="folder">From:</label>
+        <label for="sender">From:</label>
         <p-dropdown
           id="sender"
           formControlName="senderEmail"
           [options]="emailAddresses"
           [placeholder]="'Select email'"
-          class="w-full"
-        ></p-dropdown>
-      </span>
-    </li>
-
-    <li class="flex justify-between items-end mb-2">
-      <span class="p-float-label w-full">
-        <label for="folder">Folder</label>
-        <p-dropdown
-          id="folder"
-          formControlName="folder"
-          [options]="(folders$ | async)!"
-          [placeholder]="'Select folder'"
           class="w-full"
         ></p-dropdown>
       </span>

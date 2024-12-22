@@ -12,6 +12,28 @@
       <span>{{ message.receivedDate | date }}</span>
     </li>
 
+    <li class="flex justify-between items-end mb-2">
+      <span class="p-float-label w-full">
+        <span class="flex">
+          <p-dropdown
+            id="folder"
+            [options]="folders"
+            [formControl]="folderControl"
+            [placeholder]="'Select folder'"
+          ></p-dropdown>
+
+          <p-button
+            label="Move"
+            icon="pi pi-folder"
+            [loading]="moveLoading"
+            [disabled]="folderControl.pristine"
+            class="ml-2"
+            (click)="moveIntoFolder.emit(folderControl.getRawValue()!)"
+          ></p-button>
+        </span>
+      </span>
+    </li>
+
     <li class="mb-2">
       <textarea [value]="message.body" [disabled]="true" [readonly]="true" class="border px-4 py-2 rounded w-full h-[500px] resize-none bg-white"></textarea>
     </li>
