@@ -34,8 +34,8 @@ export class EmailListComponent implements OnChanges {
         type: 'emailAdress',
         expanded: true,
         children: [
+          { label: 'Add Folder', emailAddress: email.emailAddress, type: 'newFolder' },
           ...email.folders.map(folder => ({ label: folder, emailAddress: email.emailAddress, type: 'folder' })),
-          { label: 'Add Folder', emailAddress: email.emailAddress, type: 'newFolder' }
         ]
       }
     });
