@@ -1,0 +1,21 @@
+:host ::ng-deep {
+  .p-tree-node-label {
+    width: 100%;
+  }
+
+  .p-tree {
+    padding: 0;
+  }
+
+  .p-tree-node-children .p-tree-node-toggle-button {
+    display: none;
+  }
+
+  .p-tree-node-children {
+    padding-left: 0;
+  }
+
+  .p-tree-node-content {
+    padding: 0;
+  }
+}

@@ -1,0 +1,24 @@
+<p-button
+  *ngFor="let message of messages"
+  severity="secondary"
+  class="flex flex-col mb-1 w-full"
+  styleClass="flex flex-col w-full"
+  (click)="onMessageSelect.emit(message)"
+>
+  <div class="w-full flex justify-start gap-1">
+    <span class="font-bold">By:</span>
+    {{ message.personal }}
+  </div>
+  <div class="flex justify-between w-full">
+    <div class="truncate text-nowrap">
+      <span class="font-bold">Sub:</span>
+      {{ message.subject }}
+    </div>
+    <div class="text-nowrap">
+      <span class="font-bold">At:</span>
+      {{ message.receivedDate | date }}
+    </div>
+  </div>
+</p-button>
+
+<span *ngIf="!messages.length">Selected folder has no messages</span>

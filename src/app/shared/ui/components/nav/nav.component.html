@@ -1,0 +1,37 @@
+<p-menubar styleClass="fixed top-0 w-full z-10" class="z-10">
+  <ng-template pTemplate="start">
+    <div class="flex items-center pl-16">
+      <p-button
+        severity="secondary"
+        routerLink="home"
+        class="text-xl font-semibold"
+      >
+        <i class="pi pi-crown"></i>
+        Email Manager
+      </p-button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <div class="pr-16">
+
+      <ng-container *ngIf="authService.currentUser$ | async as user">
+        Hello, <span class="text-blue-500">{{ user?.login }}</span>!
+      </ng-container>
+
+      <p-button
+        *ngIf="authService.isAuthenticated$ | async else incognitoTemplate"
+        severity="danger"
+        class="ml-4"
+        (click)="logout()"
+      >
+        Log Out
+        <i class="pi pi-angle-right"></i>
+      </p-button>
+
+      <ng-template #incognitoTemplate>
+        <p-button routerLink="/auth/sign-in" severity="info" class="mr-2">Sign In</p-button>
+        <p-button routerLink="/auth/sign-up" severity="primary">Sign Up</p-button>
+      </ng-template>
+    </div>
+  </ng-template>
+</p-menubar>

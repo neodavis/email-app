@@ -1,0 +1,19 @@
+<div class="email-preview">
+  <ul class="ml-0">
+    <li class="mb-2">
+      <h2 class="text-4xl">{{ message.subject }}</h2>
+    </li>
+
+    <li class="flex justify-between items-end mb-2">
+      <span>
+        <span class="font-bold">From: </span>
+        {{ message.senderEmail }}
+      </span>
+      <span>{{ message.receivedDate | date }}</span>
+    </li>
+
+    <li class="mb-2">
+      <textarea [value]="message.body" [disabled]="true" [readonly]="true" class="border px-4 py-2 rounded w-full h-[500px] resize-none bg-white"></textarea>
+    </li>
+  </ul>
+</div>

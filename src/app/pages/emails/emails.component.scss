@@ -1,0 +1,12 @@
+:host {
+  display: block;
+  height: calc(100vh - 60px);
+}
+
+.border-right-1 {
+  border-right: 1px solid var(--surface-border);
+}
+
+.h-full {
+  height: 100%;
+}

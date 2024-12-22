@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss/base.css' layer(tailwindcss);
+@import 'tailwindcss/components.css' layer(tailwindcss);
+@import 'tailwindcss/utilities.css' layer(tailwindcss);
+
+@import "primeicons/primeicons.css";
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  padding-top: 60px; // Height of navbar
+}
+  
+.app-container {
+    min-height: calc(100vh - 60px);
+}
+
+.p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.1);
+}

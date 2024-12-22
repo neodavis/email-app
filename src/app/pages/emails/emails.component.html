@@ -1,0 +1,87 @@
+<div class="flex gap-3 h-full border">
+  <div class="border-r surface-border h-full bg-white min-w-[300px] overflow-y-auto overflow-x-hidden">
+    <div class="border-b pb-2 mb-2 px-2 my-2 flex gap-2 w-[300px]">
+      <p-button
+        severity="info"
+        class="w-full"
+        styleClass="w-full text-nowrap"
+        (onClick)="showAddMailboxDialog()"
+      >
+        <i class="pi pi-user-plus"></i>
+        Add Mailbox
+      </p-button>
+    </div>
+
+    <div class="relative">
+      <p-progressSpinner *ngIf="loadingStates.mailboxes"
+        [style]="{width: '50px', height: '50px'}"
+        styleClass="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-1/2"
+      ></p-progressSpinner>
+
+      <app-email-list
+        *ngIf="!loadingStates.mailboxes"
+        class="block px-2"
+        [emails]="emails"
+        (onFolderSelect)="handleFolderSelect($event)"
+      ></app-email-list>
+    </div>
+  </div>
+
+  <div [class.hidden]="!(selectedFolder$ | async)" class="border-r surface-border h-full bg-white min-w-[400px] max-w-[400px] overflow-y-auto overflow-x-hidden">
+    <div class="border-b pb-2 mb-2 px-2 my-2 flex gap-2 max-w-[400px]">
+      <p-button
+        severity="info"
+        class="w-full"
+        styleClass="w-full"
+        (onClick)="showAddMessage()"
+      >
+        <i class="pi pi-send"></i>
+        New Message
+      </p-button>
+    </div>
+
+    <div *ngIf="messages$ | async as messages" class="relative">
+      <p-progressSpinner *ngIf="loadingStates.messageList"
+        [style]="{width: '50px', height: '50px'}"
+        styleClass="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-1/2"
+      ></p-progressSpinner>
+
+      <app-message-list
+        *ngIf="!loadingStates.messageList"
+        class="block px-2 mt-3"
+        [messages]="messages"
+        (onMessageSelect)="handleMessageSelect($event)"
+      ></app-message-list>
+    </div>
+  </div>
+
+  <div class="p-3 w-full relative">
+    <p-progressSpinner
+      *ngIf="loadingStates.messageDetails"
+      [style]="{width: '50px', height: '50px'}"
+      styleClass="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    ></p-progressSpinner>
+
+    <div *ngIf="selectedMessage$ | async as selectedMessage">
+      <app-message-preview *ngIf="!loadingStates.messageDetails" [message]="selectedMessage"></app-message-preview>
+    </div>
+
+    <div *ngIf="newMessage$ | async">
+      <div class="flex-1">
+        <ng-container *ngIf="!loadingStates.messageDetails">
+          <app-message-form
+            [emails]="emails"
+            [loading]="loadingStates.sendMessage"
+            (onSubmit)="handleMessageSubmit($event)"
+          ></app-message-form>
+        </ng-container>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!(selectedMessage$ | async) && !(newMessage$ | async) && !loadingStates.messageDetails">
+      <div class="flex justify-center w-full h-full">
+        <p class="text-500 pt-[66px]">Select an message to view its contents</p>
+      </div>
+    </ng-container>
+  </div>
+</div>

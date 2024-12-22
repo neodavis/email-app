@@ -1,0 +1,25 @@
+<div class="w-1/3 mx-auto pt-4">
+  <p-card>
+    <h2 class="text-center text-2xl font-bold mb-4">Sign Up</h2>
+
+    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <span class="p-float-label w-full">
+          <label for="login">Login</label>
+          <input pInputText id="login" formControlName="login" class="w-full" />
+        </span>
+      </div>
+      <div class="mb-4">
+        <span class="p-float-label w-full">
+          <label for="password">Password</label>
+          <p-password id="password" formControlName="password" [toggleMask]="true" class="w-full block" className="w-full" styleClass="block w-full"></p-password>
+        </span>
+      </div>
+      <p-button type="submit" [loading]="loading" label="Sign up" styleClass="w-full"></p-button>
+    </form>
+
+    <div class="text-end mt-3">
+      <a routerLink="/auth/sign-in" class="text-blue-500">Sign in with existing account</a>
+    </div>
+  </p-card>
+</div>

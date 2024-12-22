@@ -1,0 +1,15 @@
+<p-tree [value]="nodes" styleClass="w-full">
+  <ng-template let-node pTemplate="folder">
+    <p-button
+      class="block mb-1 w-full"
+      styleClass="w-full"
+      severity="secondary"
+      (click)="onFolderSelect.emit({ emailAddress: node.emailAddress, folder: node.label })"
+    >
+      <div class="flex w-full justify-start">
+        {{ node.label }}
+      </div>
+    </p-button>
+  </ng-template>
+</p-tree>
+
